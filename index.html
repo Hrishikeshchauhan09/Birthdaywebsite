@@ -210,6 +210,7 @@
             align-items: center;
             justify-content: center;
             margin-top: 25px;
+            flex-wrap: wrap;
         }
         
         .music-btn {
@@ -229,6 +230,46 @@
         .music-btn:hover {
             background: #6c5ce7;
             transform: scale(1.05);
+        }
+        
+        .music-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .voice-selection {
+            margin: 15px 0;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .voice-btn {
+            background: #00cec9;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .voice-btn:hover {
+            background: #00b894;
+        }
+        
+        .voice-btn.active {
+            background: #e84393;
+            transform: scale(1.05);
+        }
+        
+        .indian-flag {
+            font-size: 1.2rem;
+            margin-right: 5px;
         }
         
         /* Footer */
@@ -318,6 +359,15 @@
             .highlight {
                 font-size: 1.3rem;
             }
+            
+            .music-controls {
+                flex-direction: column;
+            }
+            
+            .music-btn {
+                width: 200px;
+                justify-content: center;
+            }
         }
         
         /* Confetti */
@@ -328,6 +378,26 @@
             background-color: #f00;
             opacity: 0.7;
             z-index: 1000;
+        }
+        
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .voice-info {
+            font-size: 0.9rem;
+            color: #636e72;
+            margin-top: 10px;
+        }
+        
+        .browser-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #856404;
         }
     </style>
 </head>
@@ -363,6 +433,24 @@
             <div class="music-player" id="musicPlayer">
                 <h2 class="music-title">🎶 Happy Birthday Song 🎶</h2>
                 
+                <div class="browser-info">
+                    <strong>Note:</strong> For best Indian voice experience, use <strong>Google Chrome</strong> on <strong>Windows/Mac</strong>. 
+                    Mobile browsers may have limited voice options.
+                </div>
+                
+                <div class="voice-selection">
+                    <span>Choose Voice Style:</span>
+                    <button class="voice-btn active" onclick="selectVoice('indian')">
+                        <span class="indian-flag">🇮🇳</span> Indian Style
+                    </button>
+                    <button class="voice-btn" onclick="selectVoice('female')">
+                        👩 Soft Voice
+                    </button>
+                    <button class="voice-btn" onclick="selectVoice('male')">
+                        👨 Deep Voice
+                    </button>
+                </div>
+                
                 <div class="lyrics-container">
                     <div id="line1">Happy Birthday to you</div>
                     <div id="line2">Happy Birthday to you</div>
@@ -371,13 +459,18 @@
                 </div>
                 
                 <div class="music-controls">
-                    <button class="music-btn" onclick="startSinging()">
-                        <span>🎤 Start Singing</span>
+                    <button class="music-btn" onclick="startSingingWithVoice()" id="startBtn">
+                        <span>🎤 Sing with Voice</span>
                     </button>
-                    <button class="music-btn" onclick="stopSinging()">
+                    <button class="music-btn" onclick="stopSinging()" id="stopBtn">
                         <span>⏹️ Stop</span>
                     </button>
+                    <button class="music-btn" onclick="speakWithVoice('Happy Birthday Hemangi! May all your dreams come true! May God bless you with health, wealth and prosperity!')">
+                        <span>💝 Special Birthday Wish</span>
+                    </button>
                 </div>
+                
+                <div id="voiceStatus" class="voice-info"></div>
             </div>
         </section>
         
@@ -409,12 +502,94 @@
     <script>
         let singingInterval;
         let currentLine = 0;
+        let selectedVoice = 'indian';
+        let isSpeaking = false;
+        let availableVoices = [];
         const lyrics = [
             "Happy Birthday to you",
             "Happy Birthday to you", 
             "Happy Birthday dear Hemangi",
-            "Happy Birthday to you! 🎂"
+            "Happy Birthday to you!"
         ];
+
+        // Load available voices
+        function loadVoices() {
+            return new Promise((resolve) => {
+                // Get available voices
+                let voices = speechSynthesis.getVoices();
+                if (voices.length > 0) {
+                    availableVoices = voices;
+                    updateVoiceStatus();
+                    resolve(voices);
+                    return;
+                }
+
+                // Wait for voices to load
+                speechSynthesis.onvoiceschanged = () => {
+                    voices = speechSynthesis.getVoices();
+                    availableVoices = voices;
+                    updateVoiceStatus();
+                    resolve(voices);
+                };
+            });
+        }
+
+        function updateVoiceStatus() {
+            const status = document.getElementById('voiceStatus');
+            const indianVoices = availableVoices.filter(voice => 
+                voice.lang.includes('IN') || 
+                voice.name.toLowerCase().includes('india') ||
+                voice.name.toLowerCase().includes('hindi') ||
+                voice.name.toLowerCase().includes('bangla') ||
+                voice.name.toLowerCase().includes('tamil')
+            );
+            
+            if (indianVoices.length > 0) {
+                status.innerHTML = `✅ ${indianVoices.length} Indian accent voices available`;
+            } else {
+                status.innerHTML = `ℹ️ Using default voice. For Indian voices, try Google Chrome.`;
+            }
+        }
+
+        // Get best available voice based on selection
+        function getBestVoice() {
+            // Try to find Indian voices first
+            const indianVoices = availableVoices.filter(voice => 
+                voice.lang.includes('IN') || 
+                voice.name.toLowerCase().includes('india') ||
+                voice.name.toLowerCase().includes('hindi') ||
+                voice.name.toLowerCase().includes('bangla') ||
+                voice.name.toLowerCase().includes('tamil')
+            );
+
+            if (selectedVoice === 'indian' && indianVoices.length > 0) {
+                return indianVoices[0];
+            }
+
+            // Fallback to female/male voices
+            const femaleVoices = availableVoices.filter(voice => 
+                voice.name.toLowerCase().includes('female') || 
+                voice.name.toLowerCase().includes('woman') ||
+                voice.name.toLowerCase().includes('zira') // Windows female voice
+            );
+            
+            const maleVoices = availableVoices.filter(voice => 
+                voice.name.toLowerCase().includes('male') || 
+                voice.name.toLowerCase().includes('man') ||
+                voice.name.toLowerCase().includes('david') // Windows male voice
+            );
+
+            if (selectedVoice === 'female' && femaleVoices.length > 0) {
+                return femaleVoices[0];
+            }
+            
+            if (selectedVoice === 'male' && maleVoices.length > 0) {
+                return maleVoices[0];
+            }
+
+            // Final fallback - first available voice
+            return availableVoices.length > 0 ? availableVoices[0] : null;
+        }
 
         // Celebration Functions
         function createConfetti() {
@@ -432,7 +607,6 @@
                 
                 document.body.appendChild(confetti);
                 
-                // Animate confetti
                 const animation = confetti.animate([
                     { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
                     { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
@@ -441,10 +615,57 @@
                     easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
                 });
                 
-                // Remove confetti after animation
                 animation.onfinish = () => {
                     confetti.remove();
                 };
+            }
+        }
+
+        function selectVoice(voiceType) {
+            selectedVoice = voiceType;
+            document.querySelectorAll('.voice-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        async function speakWithVoice(text) {
+            if ('speechSynthesis' in window) {
+                await loadVoices();
+                
+                const speech = new SpeechSynthesisUtterance();
+                speech.text = text;
+                speech.volume = 1;
+                
+                // Get the best available voice
+                const bestVoice = getBestVoice();
+                if (bestVoice) {
+                    speech.voice = bestVoice;
+                    speech.lang = bestVoice.lang;
+                    
+                    // Adjust settings based on voice type
+                    if (selectedVoice === 'indian') {
+                        speech.rate = 0.85;
+                        speech.pitch = 1.1;
+                    } else if (selectedVoice === 'female') {
+                        speech.rate = 1.0;
+                        speech.pitch = 1.2;
+                    } else if (selectedVoice === 'male') {
+                        speech.rate = 0.9;
+                        speech.pitch = 0.8;
+                    }
+                }
+                
+                window.speechSynthesis.speak(speech);
+                createConfetti();
+                
+                return new Promise(resolve => {
+                    speech.onend = resolve;
+                    speech.onerror = resolve; // Resolve even if there's an error
+                });
+            } else {
+                alert("Your browser doesn't support speech synthesis. Try Chrome or Edge.");
+                return Promise.resolve();
             }
         }
 
@@ -453,75 +674,89 @@
             musicPlayer.style.display = 'block';
             musicPlayer.scrollIntoView({ behavior: 'smooth' });
             
-            // Reset lyrics highlighting
             for (let i = 1; i <= 4; i++) {
                 document.getElementById(`line${i}`).classList.remove('singing');
-                document.getElementById(`line${i}`).classList.remove('highlight');
             }
             
-            // Add highlight to Hemangi's name
             document.getElementById('line3').classList.add('highlight');
-            
             createConfetti();
         }
 
-        function startSinging() {
-            stopSinging(); // Stop any existing singing
+        async function startSingingWithVoice() {
+            if (isSpeaking) return;
             
+            stopSinging();
             currentLine = 0;
-            highlightCurrentLine();
+            isSpeaking = true;
+            document.getElementById('startBtn').disabled = true;
             
-            singingInterval = setInterval(() => {
-                currentLine++;
-                if (currentLine >= lyrics.length) {
-                    stopSinging();
-                    // Restart after a pause
-                    setTimeout(startSinging, 2000);
-                    return;
-                }
-                highlightCurrentLine();
-            }, 2000); // Change line every 2 seconds
+            await speakLineByLine();
+        }
+
+        async function speakLineByLine() {
+            if (currentLine >= lyrics.length) {
+                // Song finished
+                isSpeaking = false;
+                document.getElementById('startBtn').disabled = false;
+                
+                // Speak special ending
+                await speakWithVoice("Happy Birthday Hemangi! May all your dreams come true! God bless you!");
+                return;
+            }
+            
+            highlightCurrentLine();
+            await speakWithVoice(lyrics[currentLine]);
+            
+            currentLine++;
+            if (currentLine < lyrics.length) {
+                setTimeout(speakLineByLine, 500);
+            } else {
+                speakLineByLine();
+            }
         }
 
         function highlightCurrentLine() {
-            // Remove singing class from all lines
             for (let i = 1; i <= 4; i++) {
                 document.getElementById(`line${i}`).classList.remove('singing');
             }
             
-            // Add singing class to current line
             document.getElementById(`line${currentLine + 1}`).classList.add('singing');
             
-            // Extra confetti on Hemangi's name line
             if (currentLine === 2) {
                 createConfetti();
             }
         }
 
         function stopSinging() {
+            isSpeaking = false;
+            window.speechSynthesis.cancel();
             clearInterval(singingInterval);
-            // Remove singing class from all lines
+            
             for (let i = 1; i <= 4; i++) {
                 document.getElementById(`line${i}`).classList.remove('singing');
             }
+            
+            document.getElementById('startBtn').disabled = false;
         }
 
         function showSurprise() {
             const surprises = [
-                "🎉 Surprise! You're amazing!",
-                "✨ You shine brighter than stars!",
-                "🎂 Make a wish and blow the candles!",
-                "🥳 Party hard today!",
-                "🎁 You deserve all the happiness in the world!"
+                "Surprise! You are amazing!",
+                "You shine brighter than stars!",
+                "Make a wish and blow the candles!",
+                "Party hard today!",
+                "You deserve all the happiness in the world!"
             ];
             
             const randomSurprise = surprises[Math.floor(Math.random() * surprises.length)];
-            alert(randomSurprise);
+            speakWithVoice(randomSurprise);
             createConfetti();
         }
         
-        // Auto celebration on page load
-        window.addEventListener('load', function() {
+        // Initialize voices on load
+        window.addEventListener('load', async function() {
+            await loadVoices();
+            
             setTimeout(() => {
                 createConfetti();
                 setTimeout(createConfetti, 1000);
