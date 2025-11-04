@@ -17,6 +17,7 @@
             color: #333;
             overflow-x: hidden;
             min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .container {
@@ -33,7 +34,7 @@
         }
         
         .header-content {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -43,7 +44,7 @@
         }
         
         .birthday-title {
-            font-size: 3.5rem;
+            font-size: clamp(2rem, 5vw, 3.5rem);
             color: #e84393;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -51,13 +52,13 @@
         }
         
         .birthday-subtitle {
-            font-size: 1.8rem;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
             color: #6c5ce7;
             margin-bottom: 20px;
         }
         
         .birthday-greeting {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.2rem);
             line-height: 1.6;
             max-width: 800px;
             margin: 0 auto 30px;
@@ -67,34 +68,61 @@
         .celebration-section {
             text-align: center;
             margin: 40px 0;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
-            padding: 40px;
+            padding: 30px 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
         
         .celebration-title {
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
             color: #e84393;
             margin-bottom: 20px;
         }
         
         .celebration-message {
-            font-size: 1.5rem;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
             color: #6c5ce7;
             margin-bottom: 30px;
         }
         
         .party-time {
-            font-size: 3rem;
+            font-size: clamp(1.5rem, 4vw, 3rem);
             font-weight: bold;
             color: #e84393;
             background: white;
-            padding: 20px;
+            padding: 15px 20px;
             border-radius: 15px;
             display: inline-block;
             margin: 20px 0;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Birthday Special */
+        .birthday-special {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .special-gift {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: #e84393;
+            background: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            touch-action: manipulation;
+            user-select: none;
+        }
+        
+        .special-gift:active {
+            transform: scale(0.95);
+            background: #e84393;
+            color: white;
         }
         
         /* Photo Gallery */
@@ -104,7 +132,7 @@
         }
         
         .section-title {
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
             color: #e84393;
             margin-bottom: 30px;
             text-align: center;
@@ -114,13 +142,13 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin-bottom: 40px;
         }
         
         .photo-frame {
-            width: 250px;
-            height: 300px;
+            width: min(250px, 45vw);
+            height: min(300px, 55vw);
             background: white;
             border-radius: 15px;
             overflow: hidden;
@@ -131,10 +159,6 @@
             justify-content: center;
         }
         
-        .photo-frame:hover {
-            transform: translateY(-10px);
-        }
-        
         .photo-placeholder {
             width: 100%;
             height: 100%;
@@ -143,150 +167,211 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.2rem;
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
             font-weight: bold;
-        }
-        
-        /* Birthday Special */
-        .birthday-special {
             text-align: center;
-            margin: 30px 0;
+            padding: 10px;
         }
         
-        .special-gift {
-            font-size: 2rem;
-            color: #e84393;
-            background: white;
-            padding: 15px 30px;
-            border-radius: 50px;
-            display: inline-block;
-            margin: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .special-gift:hover {
-            background: #e84393;
-            color: white;
-            transform: scale(1.1);
-        }
-        
-        /* Music Player */
-        .music-player {
-            margin-top: 30px;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
+        /* Virtual Gift Styles */
+        .gift-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
             display: none;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .music-title {
-            font-size: 2rem;
-            color: #e84393;
-            margin-bottom: 20px;
-        }
-        
-        .lyrics-container {
-            background: linear-gradient(45deg, #a29bfe, #fd79a8);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 20px 0;
-            font-size: 1.3rem;
-            line-height: 1.8;
-            font-weight: bold;
-        }
-        
-        .highlight {
-            color: #ffeaa7;
-            font-size: 1.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .music-controls {
-            display: flex;
-            gap: 15px;
-            align-items: center;
             justify-content: center;
-            margin-top: 25px;
-            flex-wrap: wrap;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
         }
         
-        .music-btn {
+        .gift-container {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .gift-title {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: #e84393;
+            margin-bottom: 15px;
+        }
+        
+        .gift-box {
+            width: min(200px, 40vw);
+            height: min(200px, 40vw);
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            margin: 20px auto;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+            border: 5px solid #ffd700;
+            touch-action: manipulation;
+        }
+        
+        .gift-box:active {
+            transform: scale(0.95);
+        }
+        
+        .gift-lid {
+            position: absolute;
+            top: -20px;
+            width: calc(100% + 20px);
+            height: 40px;
+            background: linear-gradient(45deg, #ff8e8e, #ffe166);
+            border-radius: 10px;
+            transition: transform 0.5s ease;
+        }
+        
+        .gift-box.open .gift-lid {
+            transform: rotate(-15deg) translateY(-30px);
+        }
+        
+        .gift-content {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .virtual-cake {
+            width: min(150px, 30vw);
+            height: min(80px, 16vw);
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            border-radius: 10px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        
+        .cake-candle {
+            width: 8px;
+            height: 30px;
+            background: #ffd700;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .cake-flame {
+            width: 15px;
+            height: 20px;
+            background: #ff6b6b;
+            border-radius: 50% 50% 20% 20%;
+            margin: 0 auto 5px;
+            animation: flicker 1s infinite alternate;
+        }
+        
+        .gift-message {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #e84393;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+        }
+        
+        .close-gift {
             background: #e84393;
             color: white;
             border: none;
             padding: 12px 25px;
             border-radius: 25px;
             cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            margin-top: 20px;
+            touch-action: manipulation;
         }
         
-        .music-btn:hover {
-            background: #6c5ce7;
-            transform: scale(1.05);
+        .close-gift:active {
+            transform: scale(0.95);
         }
         
-        .music-btn:disabled {
-            background: #cccccc;
-            cursor: not-allowed;
-            transform: none;
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            animation: floatUp 8s ease-in forwards;
         }
         
-        .accent-section {
-            background: #d4edda;
-            border: 2px solid #c3e6cb;
+        .balloon::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 30px;
+            background: #333;
+        }
+        
+        .balloon:nth-child(2) { background: #6c5ce7; left: 20%; animation-delay: 0.5s; }
+        .balloon:nth-child(3) { background: #00cec9; left: 40%; animation-delay: 1s; }
+        .balloon:nth-child(4) { background: #fdcb6e; left: 60%; animation-delay: 1.5s; }
+        .balloon:nth-child(5) { background: #a29bfe; left: 80%; animation-delay: 2s; }
+        
+        /* Voice Controls */
+        .voice-controls {
+            background: #e8f5e8;
+            border: 2px solid #c8e6c9;
             border-radius: 15px;
             padding: 20px;
             margin: 20px 0;
             text-align: center;
         }
         
-        .accent-title {
-            color: #155724;
-            font-size: 1.5rem;
+        .voice-title {
+            color: #2e7d32;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
             margin-bottom: 15px;
             font-weight: bold;
         }
         
-        .accent-buttons {
+        .voice-buttons {
             display: flex;
             gap: 10px;
             justify-content: center;
             flex-wrap: wrap;
         }
         
-        .accent-btn {
-            background: #28a745;
+        .voice-btn {
+            background: #4caf50;
             color: white;
             border: none;
             padding: 12px 20px;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
             transition: all 0.3s ease;
+            touch-action: manipulation;
+            flex: 1;
+            min-width: 120px;
         }
         
-        .accent-btn:hover {
-            background: #218838;
-        }
-        
-        .accent-btn.active {
+        .voice-btn:active {
+            transform: scale(0.95);
             background: #e84393;
-            transform: scale(1.05);
         }
         
-        /* Footer */
-        footer {
+        .mobile-tip {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #856404;
             text-align: center;
-            padding: 30px 0;
-            color: #636e72;
-            font-size: 0.9rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
         
         /* Animations */
@@ -310,10 +395,15 @@
             100% { transform: scale(1) rotate(0deg); }
         }
         
-        @keyframes singAlong {
-            0% { transform: scale(1); color: white; }
-            50% { transform: scale(1.1); color: #ffeaa7; }
-            100% { transform: scale(1); color: white; }
+        @keyframes flicker {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
         }
         
         .floating {
@@ -324,110 +414,30 @@
             animation: celebrate 2s ease-in-out infinite;
         }
         
-        .singing {
-            animation: singAlong 0.5s ease-in-out;
-        }
-        
-        /* Mobile Specific Styles */
-        @media (max-width: 768px) {
-            .birthday-title {
-                font-size: 2.5rem;
-            }
-            
-            .birthday-subtitle {
-                font-size: 1.5rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .celebration-title {
-                font-size: 2rem;
-            }
-            
-            .celebration-message {
-                font-size: 1.2rem;
-            }
-            
-            .party-time {
-                font-size: 2rem;
-                padding: 15px;
-            }
-            
-            .special-gift {
-                font-size: 1.5rem;
-                padding: 12px 20px;
-                margin: 5px;
-            }
-            
-            .lyrics-container {
-                font-size: 1.1rem;
-                padding: 20px;
-            }
-            
-            .highlight {
-                font-size: 1.3rem;
-            }
-            
-            .music-controls {
-                flex-direction: column;
-            }
-            
-            .music-btn {
-                width: 100%;
-                max-width: 280px;
-                justify-content: center;
-                padding: 15px 20px;
-            }
-            
-            .accent-section {
-                padding: 15px;
-            }
-            
-            .accent-title {
-                font-size: 1.3rem;
-            }
-            
-            .accent-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .accent-btn {
-                width: 100%;
-                max-width: 250px;
-                padding: 15px;
-            }
-        }
-        
         /* Confetti */
         .confetti {
             position: fixed;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background-color: #f00;
             opacity: 0.7;
             z-index: 1000;
+            pointer-events: none;
         }
         
-        .voice-status {
-            background: #e2e3e5;
-            border-radius: 10px;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 0.9rem;
-            color: #383d41;
-        }
-        
-        .mobile-tip {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            color: #856404;
+        /* Footer */
+        footer {
             text-align: center;
+            padding: 30px 0;
+            color: #636e72;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+        }
+        
+        /* Performance Optimizations */
+        @media (prefers-reduced-motion: reduce) {
+            .floating, .celebrating {
+                animation: none;
+            }
         }
     </style>
 </head>
@@ -454,63 +464,27 @@
             </div>
             
             <div class="birthday-special">
-                <div class="special-gift" onclick="createConfetti()">🎁 Open Virtual Gift</div>
+                <div class="special-gift" onclick="openVirtualGift()">🎁 Open Virtual Gift</div>
                 <div class="special-gift" onclick="playBirthdaySong()">🎵 Birthday Music</div>
                 <div class="special-gift" onclick="showSurprise()">✨ Surprise!</div>
             </div>
 
-            <!-- Music Player -->
-            <div class="music-player" id="musicPlayer">
-                <h2 class="music-title">🎶 Happy Birthday Song 🎶</h2>
-                
+            <!-- Voice Controls -->
+            <div class="voice-controls">
+                <div class="voice-title">🎤 Indian Voice Wishes</div>
                 <div class="mobile-tip">
-                    📱 <strong>Mobile Users:</strong> Use <strong>Google Chrome</strong> for best voice quality. 
-                    Make sure your <strong>volume is turned up</strong>!
+                    📱 <strong>Best on Google Chrome</strong> | 🔊 <strong>Volume Up</strong> | 🎯 <strong>Perfect "Hemangi" Pronunciation</strong>
                 </div>
                 
-                <div class="accent-section">
-                    <div class="accent-title">🇮🇳 Choose Indian Accent</div>
-                    <p style="margin-bottom: 15px; color: #155724;">Select accent that pronounces "Hemangi" perfectly:</p>
-                    
-                    <div class="accent-buttons">
-                        <button class="accent-btn active" onclick="selectAccent('clear')">
-                            🎯 Clear Indian
-                        </button>
-                        <button class="accent-btn" onclick="selectAccent('soft')">
-                            🌸 Soft Indian
-                        </button>
-                        <button class="accent-btn" onclick="selectAccent('energetic')">
-                            ⚡ Energetic
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="voice-status" id="voiceStatus">
-                    ✅ <strong>Selected:</strong> Clear Indian Accent - Perfect for "He-man-gi" pronunciation
-                </div>
-                
-                <div class="lyrics-container">
-                    <div id="line1">Happy Birthday to you</div>
-                    <div id="line2">Happy Birthday to you</div>
-                    <div id="line3">Happy Birthday dear <span class="highlight">Hemangi</span></div>
-                    <div id="line4">Happy Birthday to you! 🎂</div>
-                </div>
-                
-                <div class="music-controls">
-                    <button class="music-btn" onclick="startSinging()" id="startBtn">
-                        <span>🎤 Sing Happy Birthday</span>
+                <div class="voice-buttons">
+                    <button class="voice-btn" onclick="speakWish('birthday')">
+                        🎂 Birthday Song
                     </button>
-                    <button class="music-btn" onclick="stopSinging()" id="stopBtn">
-                        <span>⏹️ Stop</span>
+                    <button class="voice-btn" onclick="speakWish('special')">
+                        💝 Special Wish
                     </button>
-                    <button class="music-btn" onclick="speakWish()">
-                        <span>💝 Birthday Wish</span>
-                    </button>
-                </div>
-                
-                <div style="text-align: center; margin-top: 15px;">
-                    <button class="music-btn" onclick="testVoice()" style="background: #28a745; padding: 8px 15px; font-size: 0.9rem;">
-                        🔊 Test Voice First
+                    <button class="voice-btn" onclick="speakWish('funny')">
+                        😄 Funny Wish
                     </button>
                 </div>
             </div>
@@ -541,60 +515,39 @@
         </footer>
     </div>
 
+    <!-- Virtual Gift Overlay -->
+    <div class="gift-overlay" id="giftOverlay">
+        <div class="gift-container">
+            <h2 class="gift-title">🎁 Your Virtual Gift!</h2>
+            <p>Tap on the gift box to open your surprise!</p>
+            
+            <div class="gift-box" id="giftBox" onclick="openGift()">
+                <div class="gift-lid"></div>
+                <span style="font-size: clamp(2rem, 6vw, 3rem);">🎁</span>
+            </div>
+            
+            <div class="gift-content" id="giftContent">
+                <div class="virtual-cake">
+                    <div class="cake-candle">
+                        <div class="cake-flame"></div>
+                    </div>
+                </div>
+                
+                <div class="gift-message">
+                    <h3>💝 Special Message for Hemangi!</h3>
+                    <p>Dear Hemangi,</p>
+                    <p>This virtual gift comes with lots of love and best wishes! May your birthday be as amazing as you are! 🎂✨</p>
+                    <p><strong>Make a wish and blow the virtual candle! 🕯️</strong></p>
+                </div>
+                
+                <button class="close-gift" onclick="closeGift()">Close Gift</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        let singingInterval;
-        let currentLine = 0;
-        let selectedAccent = 'clear';
-        let isSpeaking = false;
-        const lyrics = [
-            "Happy Birthday to you",
-            "Happy Birthday to you", 
-            "Happy Birthday dear Hemangi",
-            "Happy Birthday to you!"
-        ];
-
-        // Simple and effective Indian accent settings for mobile
-        const accents = {
-            'clear': {
-                rate: 0.8,
-                pitch: 1.0,
-                volume: 1.0,
-                description: 'Clear Indian Accent',
-                testText: 'Hello Hemangi! Happy Birthday!',
-                wishes: [
-                    "Happy Birthday Hemangi! May God bless you with health and happiness!",
-                    "Wishing you a wonderful birthday Hemangi! Enjoy your special day!",
-                    "Happy Birthday Hemangi! May all your dreams come true!"
-                ]
-            },
-            'soft': {
-                rate: 0.7,
-                pitch: 1.1,
-                volume: 1.0,
-                description: 'Soft Indian Accent',
-                testText: 'Hello dear Hemangi! Many happy returns!',
-                wishes: [
-                    "Happy Birthday dear Hemangi! May your life be filled with joy!",
-                    "Wishing you a beautiful birthday Hemangi! God bless you!",
-                    "Happy Birthday Hemangi! May this year bring you success!"
-                ]
-            },
-            'energetic': {
-                rate: 0.9,
-                pitch: 1.0,
-                volume: 1.0,
-                description: 'Energetic Indian Accent',
-                testText: 'Hey Hemangi! Happy Birthday to you!',
-                wishes: [
-                    "Happy Birthday Hemangi! Party hard and enjoy your day!",
-                    "Woo! Happy Birthday Hemangi! Make wonderful memories today!",
-                    "Happy Birthday Hemangi! Let's celebrate this special day!"
-                ]
-            }
-        };
-
-        // Mobile-optimized voice function
-        function speakText(text) {
+        // Mobile-optimized Indian accent voice function
+        function speakIndianVoice(text) {
             return new Promise((resolve) => {
                 if ('speechSynthesis' in window) {
                     // Stop any current speech
@@ -603,20 +556,22 @@
                     const speech = new SpeechSynthesisUtterance();
                     speech.text = text;
                     
-                    const accent = accents[selectedAccent];
-                    speech.rate = accent.rate;
-                    speech.pitch = accent.pitch;
-                    speech.volume = accent.volume;
+                    // Indian accent optimized settings
+                    speech.rate = 0.8;    // Clear and slow
+                    speech.pitch = 1.0;   // Natural Indian tone
+                    speech.volume = 1.0;  // Maximum volume
                     
                     // Try to use Indian voices if available
                     const voices = speechSynthesis.getVoices();
                     const indianVoices = voices.filter(voice => 
                         voice.lang.includes('IN') || 
-                        voice.name.toLowerCase().includes('india')
+                        voice.name.toLowerCase().includes('india') ||
+                        voice.lang.includes('en-IN')
                     );
                     
                     if (indianVoices.length > 0) {
                         speech.voice = indianVoices[0];
+                        console.log('Using Indian voice:', indianVoices[0].name);
                     }
                     
                     speech.onend = function() {
@@ -624,6 +579,7 @@
                     };
                     
                     speech.onerror = function() {
+                        console.log('Speech error, using fallback');
                         resolve();
                     };
                     
@@ -637,142 +593,177 @@
             });
         }
 
-        function selectAccent(accent) {
-            selectedAccent = accent;
-            document.querySelectorAll('.accent-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            const status = document.getElementById('voiceStatus');
-            status.innerHTML = `✅ <strong>Selected:</strong> ${accents[accent].description} - Perfect for "He-man-gi" pronunciation`;
+        // Indian accent wishes
+        const indianWishes = {
+            'birthday': [
+                "Happy Birthday to you, Happy Birthday to you, Happy Birthday dear Hemangi, Happy Birthday to you!",
+                "Happy Birthday Hemangi! May God bless you with health, wealth and happiness!",
+                "Wishing you a very Happy Birthday Hemangi! Enjoy your special day!"
+            ],
+            'special': [
+                "Dear Hemangi, on your special day, I wish you all the happiness in the world! May all your dreams come true!",
+                "Hemangi, you are an amazing person! May this birthday bring you endless joy and success in life!",
+                "Happy Birthday Hemangi! May this year be the best one yet, filled with love, laughter and wonderful memories!"
+            ],
+            'funny': [
+                "Happy Birthday Hemangi! Don't forget to make a wish before blowing the candles! And remember, calories don't count on birthdays!",
+                "Hey Hemangi! It's your birthday! Time to eat cake, party hard, and pretend you're still 21! Enjoy your day!",
+                "Happy Birthday Hemangi! Warning: Too much fun may cause permanent smiling! Proceed with celebration!"
+            ]
+        };
+
+        function speakWish(type) {
+            const wishes = indianWishes[type];
+            const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+            speakIndianVoice(randomWish);
         }
 
-        function testVoice() {
-            const accent = accents[selectedAccent];
-            speakText(accent.testText);
+        // Virtual Gift Functions
+        function openVirtualGift() {
+            const overlay = document.getElementById('giftOverlay');
+            overlay.style.display = 'flex';
+            createConfetti();
+            createBalloons();
+            
+            // Speak gift message
+            speakIndianVoice("Here's a special virtual gift for you Hemangi! Tap on the gift box to open it!");
+        }
+
+        function openGift() {
+            const giftBox = document.getElementById('giftBox');
+            const giftContent = document.getElementById('giftContent');
+            
+            // Open gift animation
+            giftBox.classList.add('open');
+            
+            // Show content after delay
+            setTimeout(() => {
+                giftContent.style.display = 'block';
+                createHeavyConfetti();
+                playSuccessSound();
+                
+                // Speak gift message
+                speakIndianVoice("Wow! Look at your beautiful virtual gift Hemangi! Make a wish and blow the candle! You are amazing!");
+            }, 1000);
+        }
+
+        function closeGift() {
+            const overlay = document.getElementById('giftOverlay');
+            overlay.style.display = 'none';
+            
+            // Reset gift
+            const giftBox = document.getElementById('giftBox');
+            const giftContent = document.getElementById('giftContent');
+            giftBox.classList.remove('open');
+            giftContent.style.display = 'none';
+        }
+
+        function createBalloons() {
+            const overlay = document.getElementById('giftOverlay');
+            
+            // Create 5 balloons
+            for (let i = 0; i < 5; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                overlay.appendChild(balloon);
+                
+                // Remove balloon after animation
+                setTimeout(() => {
+                    if (balloon.parentNode) {
+                        balloon.remove();
+                    }
+                }, 8000);
+            }
+        }
+
+        function createHeavyConfetti() {
+            const colors = ['#e84393', '#6c5ce7', '#fd79a8', '#a29bfe', '#00cec9', '#fdcb6e'];
+            const confettiCount = window.innerWidth < 768 ? 150 : 250;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                createConfettiPiece(colors, 3000);
+            }
         }
 
         function createConfetti() {
             const colors = ['#e84393', '#6c5ce7', '#fd79a8', '#a29bfe', '#00cec9'];
-            const confettiCount = window.innerWidth < 768 ? 60 : 100;
+            const confettiCount = window.innerWidth < 768 ? 80 : 120;
             
             for (let i = 0; i < confettiCount; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = '-10px';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.width = (Math.random() * 8 + 4) + 'px';
-                confetti.style.height = (Math.random() * 8 + 4) + 'px';
-                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-                
-                document.body.appendChild(confetti);
-                
-                const animation = confetti.animate([
-                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
-                    { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
-                ], {
-                    duration: Math.random() * 2000 + 1500,
-                    easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
-                });
-                
-                animation.onfinish = () => {
+                createConfettiPiece(colors, 2000);
+            }
+        }
+
+        function createConfettiPiece(colors, duration) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.top = '-10px';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.width = (Math.random() * 8 + 4) + 'px';
+            confetti.style.height = (Math.random() * 8 + 4) + 'px';
+            confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+            
+            document.body.appendChild(confetti);
+            
+            const animation = confetti.animate([
+                { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ], {
+                duration: Math.random() * duration + 1500,
+                easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
+            });
+            
+            animation.onfinish = () => {
+                if (confetti.parentNode) {
                     confetti.remove();
-                };
-            }
+                }
+            };
         }
 
-        function playBirthdaySong() {
-            const musicPlayer = document.getElementById('musicPlayer');
-            musicPlayer.style.display = 'block';
-            musicPlayer.scrollIntoView({ behavior: 'smooth' });
-            
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById(`line${i}`).classList.remove('singing');
-            }
-            
-            document.getElementById('line3').classList.add('highlight');
-            createConfetti();
-        }
-
-        async function startSinging() {
-            if (isSpeaking) return;
-            
-            stopSinging();
-            currentLine = 0;
-            isSpeaking = true;
-            document.getElementById('startBtn').disabled = true;
-            
-            await singLineByLine();
-        }
-
-        async function singLineByLine() {
-            if (currentLine >= lyrics.length) {
-                isSpeaking = false;
-                document.getElementById('startBtn').disabled = false;
+        function playSuccessSound() {
+            // Simple success sound using Web Audio API
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
                 
-                const accent = accents[selectedAccent];
-                const randomWish = accent.wishes[Math.floor(Math.random() * accent.wishes.length)];
-                await speakText(randomWish);
-                return;
-            }
-            
-            highlightCurrentLine();
-            await speakText(lyrics[currentLine]);
-            
-            currentLine++;
-            if (currentLine < lyrics.length) {
-                const delay = window.innerWidth < 768 ? 600 : 800;
-                setTimeout(singLineByLine, delay);
-            } else {
-                singLineByLine();
-            }
-        }
-
-        function speakWish() {
-            const accent = accents[selectedAccent];
-            const randomWish = accent.wishes[Math.floor(Math.random() * accent.wishes.length)];
-            speakText(randomWish);
-        }
-
-        function highlightCurrentLine() {
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById(`line${i}`).classList.remove('singing');
-            }
-            
-            document.getElementById(`line${currentLine + 1}`).classList.add('singing');
-            
-            if (currentLine === 2) {
-                createConfetti();
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                // Audio not supported, continue silently
             }
         }
 
-        function stopSinging() {
-            isSpeaking = false;
-            window.speechSynthesis.cancel();
-            clearInterval(singingInterval);
-            
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById(`line${i}`).classList.remove('singing');
-            }
-            
-            document.getElementById('startBtn').disabled = false;
+        // Existing functions with Indian accent
+        function playBirthdaySong() {
+            speakIndianVoice("Happy Birthday to you, Happy Birthday to you, Happy Birthday dear Hemangi, Happy Birthday to you!");
+            createConfetti();
         }
 
         function showSurprise() {
             const surprises = [
-                "Surprise! Happy Birthday Hemangi!",
-                "Wow! You are amazing Hemangi!",
-                "Surprise! Enjoy your special day!",
-                "Happy Birthday Hemangi! You're wonderful!"
+                "Surprise! Happy Birthday Hemangi! You are wonderful!",
+                "Wow! What a surprise! Happy Birthday dear Hemangi!",
+                "Surprise! Enjoy your special day Hemangi! You deserve the best!",
+                "Happy Birthday Hemangi! Here's a surprise for you - you're amazing!"
             ];
             
             const randomSurprise = surprises[Math.floor(Math.random() * surprises.length)];
-            speakText(randomSurprise);
+            speakIndianVoice(randomSurprise);
             createConfetti();
         }
-        
+
         // Auto celebration on load
         window.addEventListener('load', function() {
             // Initialize voices
@@ -781,15 +772,38 @@
             setTimeout(() => {
                 createConfetti();
                 setTimeout(() => {
-                    speakText("Welcome to Hemangi's birthday celebration!");
+                    speakIndianVoice("Welcome to Hemangi's birthday celebration! Tap on any button to start the fun!");
                 }, 1000);
             }, 500);
         });
 
         // Voice loading improvement
         speechSynthesis.onvoiceschanged = function() {
-            console.log('Voices ready for Hemangi birthday!');
+            console.log('Indian voices loaded and ready!');
         };
+
+        // Close gift when clicking outside
+        document.getElementById('giftOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeGift();
+            }
+        });
+
+        // Prevent zoom on double tap (iOS)
+        document.addEventListener('touchstart', function(e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
     </script>
 </body>
 </html>
