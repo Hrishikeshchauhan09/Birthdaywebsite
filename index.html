@@ -171,6 +171,66 @@
             transform: scale(1.1);
         }
         
+        /* Music Player */
+        .music-player {
+            margin-top: 30px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .music-title {
+            font-size: 2rem;
+            color: #e84393;
+            margin-bottom: 20px;
+        }
+        
+        .lyrics-container {
+            background: linear-gradient(45deg, #a29bfe, #fd79a8);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            font-weight: bold;
+        }
+        
+        .highlight {
+            color: #ffeaa7;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .music-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        
+        .music-btn {
+            background: #e84393;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .music-btn:hover {
+            background: #6c5ce7;
+            transform: scale(1.05);
+        }
+        
         /* Footer */
         footer {
             text-align: center;
@@ -200,12 +260,22 @@
             100% { transform: scale(1) rotate(0deg); }
         }
         
+        @keyframes singAlong {
+            0% { transform: scale(1); color: white; }
+            50% { transform: scale(1.1); color: #ffeaa7; }
+            100% { transform: scale(1); color: white; }
+        }
+        
         .floating {
             animation: float 5s ease-in-out infinite;
         }
         
         .celebrating {
             animation: celebrate 2s ease-in-out infinite;
+        }
+        
+        .singing {
+            animation: singAlong 0.5s ease-in-out;
         }
         
         /* Responsive Design */
@@ -238,6 +308,15 @@
             .special-gift {
                 font-size: 1.5rem;
                 padding: 12px 20px;
+            }
+            
+            .lyrics-container {
+                font-size: 1.1rem;
+                padding: 20px;
+            }
+            
+            .highlight {
+                font-size: 1.3rem;
             }
         }
         
@@ -279,6 +358,27 @@
                 <div class="special-gift" onclick="playBirthdaySong()">🎵 Birthday Music</div>
                 <div class="special-gift" onclick="showSurprise()">✨ Surprise!</div>
             </div>
+
+            <!-- Music Player -->
+            <div class="music-player" id="musicPlayer">
+                <h2 class="music-title">🎶 Happy Birthday Song 🎶</h2>
+                
+                <div class="lyrics-container">
+                    <div id="line1">Happy Birthday to you</div>
+                    <div id="line2">Happy Birthday to you</div>
+                    <div id="line3">Happy Birthday dear <span class="highlight">Hemangi</span></div>
+                    <div id="line4">Happy Birthday to you! 🎂</div>
+                </div>
+                
+                <div class="music-controls">
+                    <button class="music-btn" onclick="startSinging()">
+                        <span>🎤 Start Singing</span>
+                    </button>
+                    <button class="music-btn" onclick="stopSinging()">
+                        <span>⏹️ Stop</span>
+                    </button>
+                </div>
+            </div>
         </section>
         
         <!-- Photo Gallery Section -->
@@ -307,6 +407,15 @@
     </div>
 
     <script>
+        let singingInterval;
+        let currentLine = 0;
+        const lyrics = [
+            "Happy Birthday to you",
+            "Happy Birthday to you", 
+            "Happy Birthday dear Hemangi",
+            "Happy Birthday to you! 🎂"
+        ];
+
         // Celebration Functions
         function createConfetti() {
             const colors = ['#e84393', '#6c5ce7', '#fd79a8', '#a29bfe', '#00cec9', '#fdcb6e', '#e17055'];
@@ -340,8 +449,61 @@
         }
 
         function playBirthdaySong() {
-            alert("🎵 Playing Happy Birthday song for Hemangi! 🎵\n\nHappy Birthday to you!\nHappy Birthday to you!\nHappy Birthday dear Hemangi!\nHappy Birthday to you! 🎂");
+            const musicPlayer = document.getElementById('musicPlayer');
+            musicPlayer.style.display = 'block';
+            musicPlayer.scrollIntoView({ behavior: 'smooth' });
+            
+            // Reset lyrics highlighting
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`line${i}`).classList.remove('singing');
+                document.getElementById(`line${i}`).classList.remove('highlight');
+            }
+            
+            // Add highlight to Hemangi's name
+            document.getElementById('line3').classList.add('highlight');
+            
             createConfetti();
+        }
+
+        function startSinging() {
+            stopSinging(); // Stop any existing singing
+            
+            currentLine = 0;
+            highlightCurrentLine();
+            
+            singingInterval = setInterval(() => {
+                currentLine++;
+                if (currentLine >= lyrics.length) {
+                    stopSinging();
+                    // Restart after a pause
+                    setTimeout(startSinging, 2000);
+                    return;
+                }
+                highlightCurrentLine();
+            }, 2000); // Change line every 2 seconds
+        }
+
+        function highlightCurrentLine() {
+            // Remove singing class from all lines
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`line${i}`).classList.remove('singing');
+            }
+            
+            // Add singing class to current line
+            document.getElementById(`line${currentLine + 1}`).classList.add('singing');
+            
+            // Extra confetti on Hemangi's name line
+            if (currentLine === 2) {
+                createConfetti();
+            }
+        }
+
+        function stopSinging() {
+            clearInterval(singingInterval);
+            // Remove singing class from all lines
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`line${i}`).classList.remove('singing');
+            }
         }
 
         function showSurprise() {
