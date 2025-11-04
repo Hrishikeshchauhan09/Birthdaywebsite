@@ -432,15 +432,6 @@
             border-radius: 10px;
             margin-left: 5px;
         }
-        
-        .konkani-special {
-            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
-            color: white;
-            padding: 10px;
-            border-radius: 10px;
-            margin: 10px 0;
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
@@ -479,10 +470,6 @@
                     <div class="indian-title">🇮🇳 Complete Indian Regional Accents</div>
                     <p style="margin-bottom: 15px; color: #155724;">Choose from different Indian regional accents:</p>
                     
-                    <div class="konkani-special">
-                        🌊 Special: Konkani with Marathi-style Accent Available!
-                    </div>
-                    
                     <div class="accent-grid">
                         <button class="accent-btn active" onclick="selectIndianAccent('hindi')">
                             🎤 Hindi Belt
@@ -492,17 +479,21 @@
                             🎵 Punjabi
                             <span class="region-badge">Punjab</span>
                         </button>
-                        <button class="accent-btn" onclick="selectIndianAccent('marathi')">
-                            🎪 Marathi
-                            <span class="region-badge">Maharashtra</span>
-                        </button>
-                        <button class="accent-btn" onclick="selectIndianAccent('konkani_marathi')">
-                            🌊 Konkani-Marathi
-                            <span class="region-badge">Goa/Konkan</span>
+                        <button class="accent-btn" onclick="selectIndianAccent('kashmiri')">
+                            🏔️ Kashmiri
+                            <span class="region-badge">J&K</span>
                         </button>
                         <button class="accent-btn" onclick="selectIndianAccent('bengali')">
                             🎭 Bengali
                             <span class="region-badge">West Bengal</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('marathi')">
+                            🎪 Marathi
+                            <span class="region-badge">Maharashtra</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('konkani')">
+                            🌊 Konkani
+                            <span class="region-badge">Goa/Konkan</span>
                         </button>
                         <button class="accent-btn" onclick="selectIndianAccent('tamil')">
                             🌸 Tamil
@@ -515,6 +506,30 @@
                         <button class="accent-btn" onclick="selectIndianAccent('kannada')">
                             🐘 Kannada
                             <span class="region-badge">Karnataka</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('malayalam')">
+                            🥥 Malayalam
+                            <span class="region-badge">Kerala</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('gujarati')">
+                            🕉️ Gujarati
+                            <span class="region-badge">Gujarat</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('odia')">
+                            🏺 Odia
+                            <span class="region-badge">Odisha</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('bhojpuri')">
+                            🎶 Bhojpuri
+                            <span class="region-badge">Bihar/UP</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('rajasthani')">
+                            🐪 Rajasthani
+                            <span class="region-badge">Rajasthan</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('assamese')">
+                            🍵 Assamese
+                            <span class="region-badge">Assam</span>
                         </button>
                     </div>
                 </div>
@@ -587,7 +602,7 @@
             "Happy Birthday to you!"
         ];
 
-        // Indian accents with special Konkani-Marathi mix
+        // Complete Indian regional accents with authentic wishes
         const indianAccents = {
             'hindi': {
                 rate: 0.85,
@@ -613,28 +628,16 @@
                     "Happy Birthday! Khushiyan tere kadam chumaan Hemangi!"
                 ]
             },
-            'marathi': {
-                rate: 0.85,
-                pitch: 1.1,
+            'kashmiri': {
+                rate: 0.8,
+                pitch: 1.05,
                 volume: 1.0,
-                description: 'Marathi Accent',
-                testText: 'Namaskar! Happy Birthday Hemangi! Khup khup shubhechha!',
+                description: 'Kashmiri Accent',
+                testText: 'Hello! Happy Birthday Hemangi! Bahut bahut mubarak!',
                 wishes: [
-                    "Wadhdiwasachya hardik shubhechha Hemangi!",
-                    "Happy Birthday Hemangi! Tumchya aayushyat khushi aso!",
-                    "Janmadinachya khup khup shubhechha Hemangi! Aata cake cut kar!"
-                ]
-            },
-            'konkani_marathi': {
-                rate: 0.82,
-                pitch: 1.12,
-                volume: 1.0,
-                description: 'Konkani-Marathi Style',
-                testText: 'Namaskar! Happy Birthday Hemangi! Dev borem korum ani khup khup shubhechha!',
-                wishes: [
-                    "Happy Birthday Hemangi! Tuja wadhdivas khup khup shubhechha! Dev borem korum!",
-                    "Janam dhinachem hardik parabems Hemangi! Tuje jivit khuxal ravu! Tu khup chan aasa!",
-                    "Wadhdiwasachya khup khup shubhechha Hemangi! Bhagwan tula khushi deu! Aata cake kha!"
+                    "Happy Birthday Hemangi! Khuda aapko saari khushiyan de!",
+                    "Janamdin mubarak Hemangi! Aap hamesha khush rahein!",
+                    "Happy Birthday! Aapki zindagi khushiyon se bhari rahe!"
                 ]
             },
             'bengali': {
@@ -647,6 +650,30 @@
                     "Shubho jonmodin Hemangi! Anondo o khushi hok aaponar jibon!",
                     "Happy Birthday Hemangi! Anek anek shubhechha!",
                     "Jonmodiner shubhechha Hemangi! Aapnar jibon khushimoy hok!"
+                ]
+            },
+            'marathi': {
+                rate: 0.85,
+                pitch: 1.1,
+                volume: 1.0,
+                description: 'Marathi Accent',
+                testText: 'Namaskar! Happy Birthday Hemangi! Khup khup shubhechha!',
+                wishes: [
+                    "Wadhdiwasachya hardik shubhechha Hemangi!",
+                    "Happy Birthday Hemangi! Tumchya aayushyat khushi aso!",
+                    "Janmadinachya khup khup shubhechha Hemangi!"
+                ]
+            },
+            'konkani': {
+                rate: 0.8,
+                pitch: 1.15,
+                volume: 1.0,
+                description: 'Konkani Accent',
+                testText: 'Namaskar! Happy Birthday Hemangi! Dev borem korum!',
+                wishes: [
+                    "Janam dhinachem hardik parabems Hemangi! Dev borem korum!",
+                    "Happy Birthday Hemangi! Tuje jivit khuxal ravu!",
+                    "Vaddllapon divasachim shubhasayam Hemangi! Sukh ani santos tumkam mellum!"
                 ]
             },
             'tamil': {
@@ -683,6 +710,78 @@
                     "Huttida habbada hardika shubhashayagalu Hemangi!",
                     "Happy Birthday Hemangi! Nimma jeevana santoshavagirali!",
                     "Janmadinada shubhashayagalu Hemangi! Ellinda ananda sigali!"
+                ]
+            },
+            'malayalam': {
+                rate: 0.75,
+                pitch: 1.2,
+                volume: 1.0,
+                description: 'Malayalam Accent',
+                testText: 'Namaskaram! Happy Birthday Hemangi! Pirannal aashamsakal!',
+                wishes: [
+                    "Pirannal aashamsakal Hemangi! Ningalkku anandamaya jeevitham!",
+                    "Happy Birthday Hemangi! Ningalude aayusshu sukhamayirikkatte!",
+                    "Janmadina ashamsakal Hemangi! Ellam nallathayirikkatte!"
+                ]
+            },
+            'gujarati': {
+                rate: 0.9,
+                pitch: 1.1,
+                volume: 1.0,
+                description: 'Gujarati Accent',
+                testText: 'Kem cho! Happy Birthday Hemangi! Janma divas ni hardik shubhechha!',
+                wishes: [
+                    "Janma divas ni lakh lakh vadhaiyan Hemangi!",
+                    "Happy Birthday Hemangi! Tamaru jeevan khushi thi bhare!",
+                    "Janmadina ni shubhechha Hemangi! Tamne anand ane khushi malta rahe!"
+                ]
+            },
+            'odia': {
+                rate: 0.8,
+                pitch: 1.05,
+                volume: 1.0,
+                description: 'Odia Accent',
+                testText: 'Namaskar! Happy Birthday Hemangi! Janmadina hardika abhinandan!',
+                wishes: [
+                    "Janmadina hardika abhinandan Hemangi!",
+                    "Happy Birthday Hemangi! Tuma jeevana anandamaya houn!",
+                    "Janmadina ra ananta shubhechha Hemangi! Tume sada khusi raha!"
+                ]
+            },
+            'bhojpuri': {
+                rate: 0.9,
+                pitch: 1.2,
+                volume: 1.0,
+                description: 'Bhojpuri Accent',
+                testText: 'Happy Birthday Hemangi! Bahut bahut badhai!',
+                wishes: [
+                    "Happy Birthday Hemangi! Bhagwan ke kripa se lamba umar mil!",
+                    "Janamdin ke badhai Hemangi! Khushi se bharpur jindagi mile!",
+                    "Happy Birthday! Sada muskurate raho Hemangi!"
+                ]
+            },
+            'rajasthani': {
+                rate: 0.85,
+                pitch: 1.1,
+                volume: 1.0,
+                description: 'Rajasthani Accent',
+                testText: 'Khamma ghani! Happy Birthday Hemangi!',
+                wishes: [
+                    "Happy Birthday Hemangi! Padharo mhare des!",
+                    "Janamdin ki badhai Hemangi! Khush raho!",
+                    "Happy Birthday! Tharo jeevan khushiyan se bharya rahe!"
+                ]
+            },
+            'assamese': {
+                rate: 0.8,
+                pitch: 1.05,
+                volume: 1.0,
+                description: 'Assamese Accent',
+                testText: 'Nomoskar! Happy Birthday Hemangi! Jonmodinor xuwapona!',
+                wishes: [
+                    "Jonmodinor xuwapona Hemangi!",
+                    "Happy Birthday Hemangi! Tumar jiwontu anandamay hok!",
+                    "Jonmodinor shubhecha Hemangi! Xuwasti thakok!"
                 ]
             }
         };
