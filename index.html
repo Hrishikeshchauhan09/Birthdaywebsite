@@ -238,38 +238,53 @@
             transform: none;
         }
         
-        .voice-selection {
-            margin: 15px 0;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
+        .indian-accent-section {
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
         }
         
-        .voice-btn {
-            background: #00cec9;
+        .indian-title {
+            color: #155724;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .accent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .accent-btn {
+            background: #28a745;
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 12px 15px;
+            border-radius: 15px;
             cursor: pointer;
             font-size: 0.9rem;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
         
-        .voice-btn:hover {
-            background: #00b894;
-        }
-        
-        .voice-btn.active {
-            background: #e84393;
+        .accent-btn:hover {
+            background: #218838;
             transform: scale(1.05);
         }
         
-        .indian-flag {
-            font-size: 1.2rem;
-            margin-right: 5px;
+        .accent-btn.active {
+            background: #e84393;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         /* Footer */
@@ -319,7 +334,7 @@
             animation: singAlong 0.5s ease-in-out;
         }
         
-        /* Responsive Design */
+        /* Mobile Specific Styles */
         @media (max-width: 768px) {
             .birthday-title {
                 font-size: 2.5rem;
@@ -349,6 +364,7 @@
             .special-gift {
                 font-size: 1.5rem;
                 padding: 12px 20px;
+                margin: 5px;
             }
             
             .lyrics-container {
@@ -365,8 +381,28 @@
             }
             
             .music-btn {
-                width: 200px;
+                width: 100%;
+                max-width: 280px;
                 justify-content: center;
+                padding: 15px 20px;
+            }
+            
+            .indian-accent-section {
+                padding: 15px;
+            }
+            
+            .indian-title {
+                font-size: 1.3rem;
+            }
+            
+            .accent-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .accent-btn {
+                width: 100%;
+                padding: 15px;
+                font-size: 1rem;
             }
         }
         
@@ -380,24 +416,30 @@
             z-index: 1000;
         }
         
-        .loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-        
-        .voice-info {
-            font-size: 0.9rem;
-            color: #636e72;
-            margin-top: 10px;
-        }
-        
-        .browser-info {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
+        .voice-status {
+            background: #e2e3e5;
             border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            color: #856404;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            color: #383d41;
+        }
+        
+        .region-badge {
+            font-size: 0.8rem;
+            background: rgba(255,255,255,0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 5px;
+        }
+        
+        .konkani-special {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -433,22 +475,52 @@
             <div class="music-player" id="musicPlayer">
                 <h2 class="music-title">🎶 Happy Birthday Song 🎶</h2>
                 
-                <div class="browser-info">
-                    <strong>Note:</strong> For best Indian voice experience, use <strong>Google Chrome</strong> on <strong>Windows/Mac</strong>. 
-                    Mobile browsers may have limited voice options.
+                <div class="indian-accent-section">
+                    <div class="indian-title">🇮🇳 Complete Indian Regional Accents</div>
+                    <p style="margin-bottom: 15px; color: #155724;">Choose from different Indian regional accents:</p>
+                    
+                    <div class="konkani-special">
+                        🌊 Special: Konkani with Marathi-style Accent Available!
+                    </div>
+                    
+                    <div class="accent-grid">
+                        <button class="accent-btn active" onclick="selectIndianAccent('hindi')">
+                            🎤 Hindi Belt
+                            <span class="region-badge">North</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('punjabi')">
+                            🎵 Punjabi
+                            <span class="region-badge">Punjab</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('marathi')">
+                            🎪 Marathi
+                            <span class="region-badge">Maharashtra</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('konkani_marathi')">
+                            🌊 Konkani-Marathi
+                            <span class="region-badge">Goa/Konkan</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('bengali')">
+                            🎭 Bengali
+                            <span class="region-badge">West Bengal</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('tamil')">
+                            🌸 Tamil
+                            <span class="region-badge">Tamil Nadu</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('telugu')">
+                            💃 Telugu
+                            <span class="region-badge">Andhra</span>
+                        </button>
+                        <button class="accent-btn" onclick="selectIndianAccent('kannada')">
+                            🐘 Kannada
+                            <span class="region-badge">Karnataka</span>
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="voice-selection">
-                    <span>Choose Voice Style:</span>
-                    <button class="voice-btn active" onclick="selectVoice('indian')">
-                        <span class="indian-flag">🇮🇳</span> Indian Style
-                    </button>
-                    <button class="voice-btn" onclick="selectVoice('female')">
-                        👩 Soft Voice
-                    </button>
-                    <button class="voice-btn" onclick="selectVoice('male')">
-                        👨 Deep Voice
-                    </button>
+                <div class="voice-status" id="voiceStatus">
+                    🎯 <strong>Current:</strong> Hindi Belt Accent | Perfect for "Hemangi" pronunciation
                 </div>
                 
                 <div class="lyrics-container">
@@ -459,23 +531,27 @@
                 </div>
                 
                 <div class="music-controls">
-                    <button class="music-btn" onclick="startSingingWithVoice()" id="startBtn">
-                        <span>🎤 Sing with Voice</span>
+                    <button class="music-btn" onclick="startIndianStyleSinging()" id="startBtn">
+                        <span>🇮🇳 Sing with Regional Accent</span>
                     </button>
                     <button class="music-btn" onclick="stopSinging()" id="stopBtn">
                         <span>⏹️ Stop</span>
                     </button>
-                    <button class="music-btn" onclick="speakWithVoice('Happy Birthday Hemangi! May all your dreams come true! May God bless you with health, wealth and prosperity!')">
-                        <span>💝 Special Birthday Wish</span>
+                    <button class="music-btn" onclick="speakRegionalWish()">
+                        <span>💝 Regional Birthday Wish</span>
                     </button>
                 </div>
                 
-                <div id="voiceStatus" class="voice-info"></div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button class="music-btn" onclick="testRegionalAccent()" style="background: #28a745; padding: 8px 15px; font-size: 0.9rem;">
+                        🎧 Test Regional Accent
+                    </button>
+                </div>
             </div>
         </section>
         
         <!-- Photo Gallery Section -->
-        <!-- <section class="photo-section">
+        <section class="photo-section">
             <h2 class="section-title">Memorable Moments</h2>
             <div class="photo-gallery">
                 <div class="photo-frame">
@@ -491,7 +567,7 @@
                     <div class="photo-placeholder">Add Hemangi's Photo Here</div>
                 </div>
             </div>
-        </section> -->
+        </section>
         
         <!-- Footer -->
         <footer>
@@ -502,9 +578,8 @@
     <script>
         let singingInterval;
         let currentLine = 0;
-        let selectedVoice = 'indian';
+        let selectedAccent = 'hindi';
         let isSpeaking = false;
-        let availableVoices = [];
         const lyrics = [
             "Happy Birthday to you",
             "Happy Birthday to you", 
@@ -512,97 +587,185 @@
             "Happy Birthday to you!"
         ];
 
-        // Load available voices
-        function loadVoices() {
-            return new Promise((resolve) => {
-                // Get available voices
-                let voices = speechSynthesis.getVoices();
-                if (voices.length > 0) {
-                    availableVoices = voices;
-                    updateVoiceStatus();
-                    resolve(voices);
-                    return;
-                }
+        // Indian accents with special Konkani-Marathi mix
+        const indianAccents = {
+            'hindi': {
+                rate: 0.85,
+                pitch: 1.1,
+                volume: 1.0,
+                description: 'Hindi Belt Accent',
+                testText: 'Hello! Ye Hindi accent mein Happy Birthday Hemangi!',
+                wishes: [
+                    "Happy Birthday Hemangi! Bhagwan aapko lambi umar de!",
+                    "Janamdin ki hardik shubhkamnayein Hemangi!",
+                    "Happy Birthday! Khush raho, muskurate raho Hemangi!"
+                ]
+            },
+            'punjabi': {
+                rate: 0.9,
+                pitch: 1.2,
+                volume: 1.0,
+                description: 'Punjabi Accent',
+                testText: 'Oye! Happy Birthday Hemangi! Bohot bohot vadhaiyan!',
+                wishes: [
+                    "Happy Birthday Hemangi! Rabb mehar kare te umar lambi deve!",
+                    "Janamdin diyan lakh lakh vadhaiyan Hemangi!",
+                    "Happy Birthday! Khushiyan tere kadam chumaan Hemangi!"
+                ]
+            },
+            'marathi': {
+                rate: 0.85,
+                pitch: 1.1,
+                volume: 1.0,
+                description: 'Marathi Accent',
+                testText: 'Namaskar! Happy Birthday Hemangi! Khup khup shubhechha!',
+                wishes: [
+                    "Wadhdiwasachya hardik shubhechha Hemangi!",
+                    "Happy Birthday Hemangi! Tumchya aayushyat khushi aso!",
+                    "Janmadinachya khup khup shubhechha Hemangi! Aata cake cut kar!"
+                ]
+            },
+            'konkani_marathi': {
+                rate: 0.82,
+                pitch: 1.12,
+                volume: 1.0,
+                description: 'Konkani-Marathi Style',
+                testText: 'Namaskar! Happy Birthday Hemangi! Dev borem korum ani khup khup shubhechha!',
+                wishes: [
+                    "Happy Birthday Hemangi! Tuja wadhdivas khup khup shubhechha! Dev borem korum!",
+                    "Janam dhinachem hardik parabems Hemangi! Tuje jivit khuxal ravu! Tu khup chan aasa!",
+                    "Wadhdiwasachya khup khup shubhechha Hemangi! Bhagwan tula khushi deu! Aata cake kha!"
+                ]
+            },
+            'bengali': {
+                rate: 0.75,
+                pitch: 1.05,
+                volume: 1.0,
+                description: 'Bengali Accent',
+                testText: 'Nomoshkar! Shubho jonmodin Hemangi!',
+                wishes: [
+                    "Shubho jonmodin Hemangi! Anondo o khushi hok aaponar jibon!",
+                    "Happy Birthday Hemangi! Anek anek shubhechha!",
+                    "Jonmodiner shubhechha Hemangi! Aapnar jibon khushimoy hok!"
+                ]
+            },
+            'tamil': {
+                rate: 0.8,
+                pitch: 1.15,
+                volume: 1.0,
+                description: 'Tamil Accent',
+                testText: 'Vanakkam! Happy Birthday Hemangi! Iniya pirantha naal vaazhthukal!',
+                wishes: [
+                    "Piranthanaal vaazhthukal Hemangi! Iyarkai anintha inbam alikkum!",
+                    "Happy Birthday Hemangi! Uyirinukku anandamana dinam!",
+                    "Iniya pirantha naal nalvazhthukal Hemangi! Valarugin vazhthukal!"
+                ]
+            },
+            'telugu': {
+                rate: 0.85,
+                pitch: 1.1,
+                volume: 1.0,
+                description: 'Telugu Accent',
+                testText: 'Namaskaram! Happy Birthday Hemangi! Janmadina subhakankshalu!',
+                wishes: [
+                    "Janmadina subhakankshalu Hemangi! Meeru chala santhosamga undali!",
+                    "Happy Birthday Hemangi! Mee jeevitham anandamayga undaga!",
+                    "Puttina roju shubhakankshalu Hemangi! Mee aayushyam neerainaa anandamayga undali!"
+                ]
+            },
+            'kannada': {
+                rate: 0.8,
+                pitch: 1.1,
+                volume: 1.0,
+                description: 'Kannada Accent',
+                testText: 'Namaskara! Happy Birthday Hemangi! Huttida habbada shubhashayagalu!',
+                wishes: [
+                    "Huttida habbada hardika shubhashayagalu Hemangi!",
+                    "Happy Birthday Hemangi! Nimma jeevana santoshavagirali!",
+                    "Janmadinada shubhashayagalu Hemangi! Ellinda ananda sigali!"
+                ]
+            }
+        };
 
-                // Wait for voices to load
-                speechSynthesis.onvoiceschanged = () => {
-                    voices = speechSynthesis.getVoices();
-                    availableVoices = voices;
-                    updateVoiceStatus();
-                    resolve(voices);
+        // Mobile-optimized settings
+        function getIndianAccentSettings() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const accent = indianAccents[selectedAccent];
+            
+            if (isMobile) {
+                return {
+                    ...accent,
+                    rate: accent.rate + 0.1,
+                    volume: 1.0
                 };
+            }
+            
+            return accent;
+        }
+
+        function selectIndianAccent(accent) {
+            selectedAccent = accent;
+            document.querySelectorAll('.accent-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            const status = document.getElementById('voiceStatus');
+            status.innerHTML = `🎯 <strong>Current:</strong> ${indianAccents[accent].description} | Perfect for "Hemangi" pronunciation`;
+        }
+
+        function speakWithIndianAccent(text) {
+            return new Promise((resolve) => {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    
+                    const speech = new SpeechSynthesisUtterance();
+                    speech.text = text;
+                    
+                    const settings = getIndianAccentSettings();
+                    speech.rate = settings.rate;
+                    speech.pitch = settings.pitch;
+                    speech.volume = settings.volume;
+                    
+                    const voices = speechSynthesis.getVoices();
+                    const indianVoices = voices.filter(voice => 
+                        voice.lang.includes('IN') || 
+                        voice.name.toLowerCase().includes('india')
+                    );
+                    
+                    if (indianVoices.length > 0) {
+                        speech.voice = indianVoices[0];
+                    }
+                    
+                    speech.onend = resolve;
+                    speech.onerror = resolve;
+                    
+                    window.speechSynthesis.speak(speech);
+                    createConfetti();
+                } else {
+                    alert("🎵 " + text);
+                    resolve();
+                }
             });
         }
 
-        function updateVoiceStatus() {
-            const status = document.getElementById('voiceStatus');
-            const indianVoices = availableVoices.filter(voice => 
-                voice.lang.includes('IN') || 
-                voice.name.toLowerCase().includes('india') ||
-                voice.name.toLowerCase().includes('hindi') ||
-                voice.name.toLowerCase().includes('bangla') ||
-                voice.name.toLowerCase().includes('tamil')
-            );
-            
-            if (indianVoices.length > 0) {
-                status.innerHTML = `✅ ${indianVoices.length} Indian accent voices available`;
-            } else {
-                status.innerHTML = `ℹ️ Using default voice. For Indian voices, try Google Chrome.`;
-            }
+        function testRegionalAccent() {
+            const accent = indianAccents[selectedAccent];
+            speakWithIndianAccent(accent.testText);
         }
 
-        // Get best available voice based on selection
-        function getBestVoice() {
-            // Try to find Indian voices first
-            const indianVoices = availableVoices.filter(voice => 
-                voice.lang.includes('IN') || 
-                voice.name.toLowerCase().includes('india') ||
-                voice.name.toLowerCase().includes('hindi') ||
-                voice.name.toLowerCase().includes('bangla') ||
-                voice.name.toLowerCase().includes('tamil')
-            );
-
-            if (selectedVoice === 'indian' && indianVoices.length > 0) {
-                return indianVoices[0];
-            }
-
-            // Fallback to female/male voices
-            const femaleVoices = availableVoices.filter(voice => 
-                voice.name.toLowerCase().includes('female') || 
-                voice.name.toLowerCase().includes('woman') ||
-                voice.name.toLowerCase().includes('zira') // Windows female voice
-            );
-            
-            const maleVoices = availableVoices.filter(voice => 
-                voice.name.toLowerCase().includes('male') || 
-                voice.name.toLowerCase().includes('man') ||
-                voice.name.toLowerCase().includes('david') // Windows male voice
-            );
-
-            if (selectedVoice === 'female' && femaleVoices.length > 0) {
-                return femaleVoices[0];
-            }
-            
-            if (selectedVoice === 'male' && maleVoices.length > 0) {
-                return maleVoices[0];
-            }
-
-            // Final fallback - first available voice
-            return availableVoices.length > 0 ? availableVoices[0] : null;
-        }
-
-        // Celebration Functions
         function createConfetti() {
             const colors = ['#e84393', '#6c5ce7', '#fd79a8', '#a29bfe', '#00cec9', '#fdcb6e', '#e17055'];
+            const confettiCount = window.innerWidth < 768 ? 80 : 150;
             
-            for (let i = 0; i < 150; i++) {
+            for (let i = 0; i < confettiCount; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
                 confetti.style.left = Math.random() * 100 + 'vw';
                 confetti.style.top = '-10px';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.width = Math.random() * 15 + 5 + 'px';
-                confetti.style.height = Math.random() * 15 + 5 + 'px';
+                confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                confetti.style.height = (Math.random() * 10 + 5) + 'px';
                 confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
                 
                 document.body.appendChild(confetti);
@@ -621,54 +784,6 @@
             }
         }
 
-        function selectVoice(voiceType) {
-            selectedVoice = voiceType;
-            document.querySelectorAll('.voice-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-        }
-
-        async function speakWithVoice(text) {
-            if ('speechSynthesis' in window) {
-                await loadVoices();
-                
-                const speech = new SpeechSynthesisUtterance();
-                speech.text = text;
-                speech.volume = 1;
-                
-                // Get the best available voice
-                const bestVoice = getBestVoice();
-                if (bestVoice) {
-                    speech.voice = bestVoice;
-                    speech.lang = bestVoice.lang;
-                    
-                    // Adjust settings based on voice type
-                    if (selectedVoice === 'indian') {
-                        speech.rate = 0.85;
-                        speech.pitch = 1.1;
-                    } else if (selectedVoice === 'female') {
-                        speech.rate = 1.0;
-                        speech.pitch = 1.2;
-                    } else if (selectedVoice === 'male') {
-                        speech.rate = 0.9;
-                        speech.pitch = 0.8;
-                    }
-                }
-                
-                window.speechSynthesis.speak(speech);
-                createConfetti();
-                
-                return new Promise(resolve => {
-                    speech.onend = resolve;
-                    speech.onerror = resolve; // Resolve even if there's an error
-                });
-            } else {
-                alert("Your browser doesn't support speech synthesis. Try Chrome or Edge.");
-                return Promise.resolve();
-            }
-        }
-
         function playBirthdaySong() {
             const musicPlayer = document.getElementById('musicPlayer');
             musicPlayer.style.display = 'block';
@@ -682,7 +797,7 @@
             createConfetti();
         }
 
-        async function startSingingWithVoice() {
+        async function startIndianStyleSinging() {
             if (isSpeaking) return;
             
             stopSinging();
@@ -690,29 +805,36 @@
             isSpeaking = true;
             document.getElementById('startBtn').disabled = true;
             
-            await speakLineByLine();
+            await speakIndianLineByLine();
         }
 
-        async function speakLineByLine() {
+        async function speakIndianLineByLine() {
             if (currentLine >= lyrics.length) {
-                // Song finished
                 isSpeaking = false;
                 document.getElementById('startBtn').disabled = false;
                 
-                // Speak special ending
-                await speakWithVoice("Happy Birthday Hemangi! May all your dreams come true! God bless you!");
+                const accent = indianAccents[selectedAccent];
+                const randomWish = accent.wishes[Math.floor(Math.random() * accent.wishes.length)];
+                await speakWithIndianAccent(randomWish);
                 return;
             }
             
             highlightCurrentLine();
-            await speakWithVoice(lyrics[currentLine]);
+            await speakWithIndianAccent(lyrics[currentLine]);
             
             currentLine++;
             if (currentLine < lyrics.length) {
-                setTimeout(speakLineByLine, 500);
+                const delay = window.innerWidth < 768 ? 500 : 700;
+                setTimeout(speakIndianLineByLine, delay);
             } else {
-                speakLineByLine();
+                speakIndianLineByLine();
             }
+        }
+
+        function speakRegionalWish() {
+            const accent = indianAccents[selectedAccent];
+            const randomWish = accent.wishes[Math.floor(Math.random() * accent.wishes.length)];
+            speakWithIndianAccent(randomWish);
         }
 
         function highlightCurrentLine() {
@@ -741,35 +863,35 @@
 
         function showSurprise() {
             const surprises = [
-                "Surprise! You are amazing!",
-                "You shine brighter than stars!",
-                "Make a wish and blow the candles!",
-                "Party hard today!",
-                "You deserve all the happiness in the world!"
+                "Waah! Kya surprise hai! Happy Birthday Hemangi!",
+                "Surprise! Aap bohot khaas ho Hemangi!",
+                "Chook gaye na! Happy Birthday Hemangi!",
+                "Surprise! Aapko janamdin ki dher sari shubhkamnayein!"
             ];
             
             const randomSurprise = surprises[Math.floor(Math.random() * surprises.length)];
-            speakWithVoice(randomSurprise);
+            speakWithIndianAccent(randomSurprise);
             createConfetti();
         }
         
-        // Initialize voices on load
-        window.addEventListener('load', async function() {
-            await loadVoices();
+        // Auto celebration on load
+        window.addEventListener('load', function() {
+            speechSynthesis.getVoices();
             
             setTimeout(() => {
                 createConfetti();
                 setTimeout(createConfetti, 1000);
                 setTimeout(createConfetti, 2000);
+                
+                setTimeout(() => {
+                    speakWithIndianAccent("Welcome to Hemangi's birthday celebration!");
+                }, 1500);
             }, 500);
         });
 
-        // Continuous celebration
-        setInterval(() => {
-            if (Math.random() > 0.7) {
-                createConfetti();
-            }
-        }, 5000);
+        speechSynthesis.onvoiceschanged = function() {
+            console.log('Voices loaded:', speechSynthesis.getVoices().length);
+        };
     </script>
 </body>
 </html>
