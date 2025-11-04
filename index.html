@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Hemangi!</title>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KL1VEQ9L87');
+    </script>
+    
     <style>
         * {
             margin: 0;
@@ -373,6 +383,20 @@
             text-align: center;
             font-size: clamp(0.9rem, 2vw, 1rem);
         }
+
+        /* Admin Panel (Hidden by default) */
+        .admin-panel {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            z-index: 10000;
+            display: none;
+        }
         
         /* Animations */
         @keyframes pulse {
@@ -432,16 +456,15 @@
             color: #636e72;
             font-size: clamp(0.8rem, 2vw, 0.9rem);
         }
-        
-        /* Performance Optimizations */
-        @media (prefers-reduced-motion: reduce) {
-            .floating, .celebrating {
-                animation: none;
-            }
-        }
     </style>
 </head>
 <body>
+    <!-- Hidden Admin Panel (Press Ctrl+Shift+A to show) -->
+    <div class="admin-panel" id="adminPanel">
+        <strong>📊 Live Tracking</strong>
+        <div id="trackingData">Loading...</div>
+    </div>
+
     <div class="container">
         <!-- Header Section -->
         <header>
@@ -464,9 +487,9 @@
             </div>
             
             <div class="birthday-special">
-                <div class="special-gift" onclick="openVirtualGift()">🎁 Open Virtual Gift</div>
-                <div class="special-gift" onclick="playBirthdaySong()">🎵 Birthday Music</div>
-                <div class="special-gift" onclick="showSurprise()">✨ Surprise!</div>
+                <div class="special-gift" onclick="trackEvent('virtual_gift'); openVirtualGift()">🎁 Open Virtual Gift</div>
+                <div class="special-gift" onclick="trackEvent('birthday_music'); playBirthdaySong()">🎵 Birthday Music</div>
+                <div class="special-gift" onclick="trackEvent('surprise'); showSurprise()">✨ Surprise!</div>
             </div>
 
             <!-- Voice Controls -->
@@ -477,13 +500,13 @@
                 </div>
                 
                 <div class="voice-buttons">
-                    <button class="voice-btn" onclick="speakWish('birthday')">
+                    <button class="voice-btn" onclick="trackEvent('birthday_song'); speakWish('birthday')">
                         🎂 Birthday Song
                     </button>
-                    <button class="voice-btn" onclick="speakWish('special')">
+                    <button class="voice-btn" onclick="trackEvent('special_wish'); speakWish('special')">
                         💝 Special Wish
                     </button>
-                    <button class="voice-btn" onclick="speakWish('funny')">
+                    <button class="voice-btn" onclick="trackEvent('funny_wish'); speakWish('funny')">
                         😄 Funny Wish
                     </button>
                 </div>
@@ -521,7 +544,7 @@
             <h2 class="gift-title">🎁 Your Virtual Gift!</h2>
             <p>Tap on the gift box to open your surprise!</p>
             
-            <div class="gift-box" id="giftBox" onclick="openGift()">
+            <div class="gift-box" id="giftBox" onclick="trackEvent('gift_opened'); openGift()">
                 <div class="gift-lid"></div>
                 <span style="font-size: clamp(2rem, 6vw, 3rem);">🎁</span>
             </div>
@@ -540,28 +563,98 @@
                     <p><strong>Make a wish and blow the virtual candle! 🕯️</strong></p>
                 </div>
                 
-                <button class="close-gift" onclick="closeGift()">Close Gift</button>
+                <button class="close-gift" onclick="trackEvent('gift_closed'); closeGift()">Close Gift</button>
             </div>
         </div>
     </div>
 
     <script>
+        // ==================== TRACKING SYSTEM ====================
+        
+        // Simple tracking data storage
+        let trackingData = {
+            virtual_gift: 0,
+            birthday_music: 0,
+            surprise: 0,
+            birthday_song: 0,
+            special_wish: 0,
+            funny_wish: 0,
+            gift_opened: 0,
+            gift_closed: 0,
+            page_views: 0,
+            session_start: new Date().toISOString()
+        };
+
+        // Track page view
+        trackingData.page_views++;
+        
+        // Event tracking function
+        function trackEvent(eventName) {
+            // Update local tracking
+            if (trackingData[eventName] !== undefined) {
+                trackingData[eventName]++;
+            }
+            
+            // Update admin panel
+            updateAdminPanel();
+            
+            // Google Analytics (Replace GA_MEASUREMENT_ID with your actual ID)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, {
+                    'event_category': 'birthday_website',
+                    'event_label': 'Hemangi Birthday'
+                });
+            }
+            
+            // Console log for debugging
+            console.log(`📊 Event Tracked: ${eventName} - Total: ${trackingData[eventName]}`);
+        }
+
+        // Update admin panel
+        function updateAdminPanel() {
+            const adminPanel = document.getElementById('adminPanel');
+            const trackingDisplay = document.getElementById('trackingData');
+            
+            if (adminPanel && trackingDisplay) {
+                trackingDisplay.innerHTML = `
+                    🎁 Virtual Gift: ${trackingData.virtual_gift}<br>
+                    🎵 Birthday Music: ${trackingData.birthday_music}<br>
+                    ✨ Surprise: ${trackingData.surprise}<br>
+                    🎂 Song: ${trackingData.birthday_song}<br>
+                    💝 Special Wish: ${trackingData.special_wish}<br>
+                    😄 Funny Wish: ${trackingData.funny_wish}<br>
+                    📦 Gift Opened: ${trackingData.gift_opened}<br>
+                    ❌ Gift Closed: ${trackingData.gift_closed}<br>
+                    👀 Page Views: ${trackingData.page_views}<br>
+                    ⏰ Session: ${new Date().toLocaleTimeString()}
+                `;
+            }
+        }
+
+        // Admin panel toggle (Ctrl+Shift+A)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                const adminPanel = document.getElementById('adminPanel');
+                adminPanel.style.display = adminPanel.style.display === 'none' ? 'block' : 'none';
+                updateAdminPanel();
+            }
+        });
+
+        // ==================== EXISTING FUNCTIONALITY ====================
+
         // Mobile-optimized Indian accent voice function
         function speakIndianVoice(text) {
             return new Promise((resolve) => {
                 if ('speechSynthesis' in window) {
-                    // Stop any current speech
                     window.speechSynthesis.cancel();
                     
                     const speech = new SpeechSynthesisUtterance();
                     speech.text = text;
                     
-                    // Indian accent optimized settings
-                    speech.rate = 0.8;    // Clear and slow
-                    speech.pitch = 1.0;   // Natural Indian tone
-                    speech.volume = 1.0;  // Maximum volume
+                    speech.rate = 0.8;
+                    speech.pitch = 1.0;
+                    speech.volume = 1.0;
                     
-                    // Try to use Indian voices if available
                     const voices = speechSynthesis.getVoices();
                     const indianVoices = voices.filter(voice => 
                         voice.lang.includes('IN') || 
@@ -571,22 +664,14 @@
                     
                     if (indianVoices.length > 0) {
                         speech.voice = indianVoices[0];
-                        console.log('Using Indian voice:', indianVoices[0].name);
                     }
                     
-                    speech.onend = function() {
-                        resolve();
-                    };
-                    
-                    speech.onerror = function() {
-                        console.log('Speech error, using fallback');
-                        resolve();
-                    };
+                    speech.onend = resolve;
+                    speech.onerror = resolve;
                     
                     window.speechSynthesis.speak(speech);
                     createConfetti();
                 } else {
-                    // Fallback for browsers without speech
                     alert("🎵 " + text);
                     resolve();
                 }
@@ -625,7 +710,6 @@
             createConfetti();
             createBalloons();
             
-            // Speak gift message
             speakIndianVoice("Here's a special virtual gift for you Hemangi! Tap on the gift box to open it!");
         }
 
@@ -633,16 +717,13 @@
             const giftBox = document.getElementById('giftBox');
             const giftContent = document.getElementById('giftContent');
             
-            // Open gift animation
             giftBox.classList.add('open');
             
-            // Show content after delay
             setTimeout(() => {
                 giftContent.style.display = 'block';
                 createHeavyConfetti();
                 playSuccessSound();
                 
-                // Speak gift message
                 speakIndianVoice("Wow! Look at your beautiful virtual gift Hemangi! Make a wish and blow the candle! You are amazing!");
             }, 1000);
         }
@@ -651,7 +732,6 @@
             const overlay = document.getElementById('giftOverlay');
             overlay.style.display = 'none';
             
-            // Reset gift
             const giftBox = document.getElementById('giftBox');
             const giftContent = document.getElementById('giftContent');
             giftBox.classList.remove('open');
@@ -661,13 +741,11 @@
         function createBalloons() {
             const overlay = document.getElementById('giftOverlay');
             
-            // Create 5 balloons
             for (let i = 0; i < 5; i++) {
                 const balloon = document.createElement('div');
                 balloon.className = 'balloon';
                 overlay.appendChild(balloon);
                 
-                // Remove balloon after animation
                 setTimeout(() => {
                     if (balloon.parentNode) {
                         balloon.remove();
@@ -722,7 +800,6 @@
         }
 
         function playSuccessSound() {
-            // Simple success sound using Web Audio API
             try {
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const oscillator = audioContext.createOscillator();
@@ -741,7 +818,7 @@
                 oscillator.start(audioContext.currentTime);
                 oscillator.stop(audioContext.currentTime + 0.5);
             } catch (e) {
-                // Audio not supported, continue silently
+                // Audio not supported
             }
         }
 
@@ -766,7 +843,6 @@
 
         // Auto celebration on load
         window.addEventListener('load', function() {
-            // Initialize voices
             speechSynthesis.getVoices();
             
             setTimeout(() => {
@@ -789,21 +865,8 @@
             }
         });
 
-        // Prevent zoom on double tap (iOS)
-        document.addEventListener('touchstart', function(e) {
-            if (e.touches.length > 1) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(e) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                e.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
+        // Initialize admin panel
+        updateAdminPanel();
     </script>
 </body>
 </html>
