@@ -229,6 +229,7 @@
             position: relative;
             border: 5px solid #ffd700;
             touch-action: manipulation;
+            overflow: hidden;
         }
         
         .gift-box:active {
@@ -243,6 +244,7 @@
             background: linear-gradient(45deg, #ff8e8e, #ffe166);
             border-radius: 10px;
             transition: transform 0.5s ease;
+            z-index: 2;
         }
         
         .gift-box.open .gift-lid {
@@ -252,6 +254,51 @@
         .gift-content {
             display: none;
             margin-top: 20px;
+        }
+        
+        /* Moon Image Section */
+        .moon-section {
+            background: linear-gradient(135deg, #0c0c0c, #2d3436);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            color: white;
+            border: 3px solid #ffeaa7;
+        }
+        
+        .moon-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            margin: 15px auto;
+            display: block;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            border: 2px solid #ffeaa7;
+        }
+        
+        .moon-title {
+            color: #ffeaa7;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .moon-message {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #ffeaa7;
+        }
+        
+        .birth-date {
+            background: rgba(116, 185, 255, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #74b9ff;
         }
         
         .virtual-cake {
@@ -430,12 +477,22 @@
             100% { transform: translateY(-100vh) rotate(360deg); }
         }
         
+        @keyframes glow {
+            0% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 255, 255, 0.8); }
+            100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+        }
+        
         .floating {
             animation: float 5s ease-in-out infinite;
         }
         
         .celebrating {
             animation: celebrate 2s ease-in-out infinite;
+        }
+        
+        .moon-glow {
+            animation: glow 3s ease-in-out infinite;
         }
         
         /* Confetti */
@@ -550,6 +607,22 @@
             </div>
             
             <div class="gift-content" id="giftContent">
+                <!-- Moon Image Section -->
+                <div class="moon-section moon-glow">
+                    <h3 class="moon-title">🌙 Special Moon Gift</h3>
+                    <div class="birth-date">
+                        📅 Your Birth Date: 4th November 2004
+                    </div>
+                   <img src="https://raw.githubusercontent.com/akshaykhale1998/moon/main/moon.png" 
+     alt="Moon on 4th November 2004" 
+     class="moon-image"
+     onerror="this.src='https://lunaf.com/img/moon/h-phase-23.png'">
+                    <div class="moon-message">
+                        <p>✨ <strong>This is how the Moon looked on the day you were born!</strong></p>
+                        <p>Just like the Moon, you bring light and beauty into our lives. May your life always shine bright! 🌟</p>
+                    </div>
+                </div>
+                
                 <div class="virtual-cake">
                     <div class="cake-candle">
                         <div class="cake-flame"></div>
@@ -559,7 +632,7 @@
                 <div class="gift-message">
                     <h3>💝 Special Message for Hemangi!</h3>
                     <p>Dear Hemangi,</p>
-                    <p>This virtual gift comes with lots of love and best wishes! May your birthday be as amazing as you are! 🎂✨</p>
+                    <p>This special moon image shows how the universe welcomed you on November 4th, 2004! You are as beautiful and unique as this moon! 🌙✨</p>
                     <p><strong>Make a wish and blow the virtual candle! 🕯️</strong></p>
                 </div>
                 
@@ -724,7 +797,7 @@
                 createHeavyConfetti();
                 playSuccessSound();
                 
-                speakIndianVoice("Wow! Look at your beautiful virtual gift Hemangi! Make a wish and blow the candle! You are amazing!");
+                speakIndianVoice("Wow Hemangi! Look at this special gift! This is how the moon looked on the day you were born - 4th November 2004! You are as beautiful as this moon!");
             }, 1000);
         }
 
